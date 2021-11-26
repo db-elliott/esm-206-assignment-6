@@ -6,53 +6,93 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE, message = FALSE, warning = FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 library(tidyverse)
 library(here)
 library(janitor)
 library(broom)
+library(kableExtra)
 ```
 
-## Overview
+### Overview
 
+This report provides a description of the association between survey respondents’ political affiliation (“conservative” or “liberal” by self-identification) and if they consider themselves an environmentalist. Data from 1,331 individual respondents were collected and made available by Dr. Chelsea Batavia and Andrews Forest LTER to explore "influences on charitable giving for conservation" in August 2017. These data are explored by chi-square test, using  a significance level (α) of 0.05. All analyses are in R version 4.1.1 using RStudio version 1.4.1717.
 
-## Read-In and Subset Data
+.
+
+### Data Analysis
 
 ```{r}
+
+## read-in and subset data
 
 survey_data <- read_csv(here("data", "conservation_survey.csv")) %>% 
   clean_names()
 
 pol_data <- survey_data %>%
-  mutate(politics = case_when(
-    pol_or %in% c(1, 2, 3) ~ "conservative",
-    pol_or %in% c(5, 6, 7) ~ "liberal")) %>% 
+  mutate(Politics = case_when(
+    pol_or %in% c(1, 2, 3) ~ "Conservative",
+    pol_or %in% c(5, 6, 7) ~ "Liberal")) %>% 
   mutate(env_id = case_when(
-    env_id == 1 ~ "yes",
-    env_id == 2 ~ "no",
-    env_id == 3 ~ "unsure")) %>% 
-  subset(select = c(politics, env_id)) %>% 
+    env_id == 1 ~ "Yes",
+    env_id == 2 ~ "No",
+    env_id == 3 ~ "Unsure")) %>% 
+  subset(select = c(Politics, env_id)) %>% 
   na.omit()
 ```
 
-## Create Table of Counts/Proportions
 
 ```{r}
 
+## create tables of counts/proportions
+
 counts <- pol_data %>% 
-  tabyl(politics, env_id)  # counts of intersections in a tibble
+  tabyl(Politics, env_id)  # counts of intersections in a tibble
+
 
 props <- counts %>% 
    adorn_percentages() %>%
   adorn_pct_formatting(digits = 2) %>% 
-  adorn_ns()                           # counts & proportions in a tibble
-
-# convert to contingency table
-
-pol_ct <- props %>% 
-  column_to_rownames(var = "politics")
-
-```
+  adorn_ns()                  # counts & proportions in a tibble
 ```
 
+```{r}
+
+props[, c(1, 4, 2, 3)] %>% 
+  kbl(col.names = c("Politics", "Yes", "No", "Unsure"), caption = "<b> Table 1. Environmental opinion by political alignment. </b> Counts and proportions of conservatives versus liberals who answered either 'yes', 'no', or 'unsure' to the statement 'I consider myself an environmentalist.'") %>% 
+  kable_classic()
+
+
+```
+
+```{r}
+
+# create contingency table
+
+pol_con <- counts %>% 
+  column_to_rownames(var = "Politics") 
+
+pol_ct <- pol_con[, c(3, 1, 2)]
+```
+
+```{r}
+
+# run chi-square test
+
+pol_x2 <- chisq.test(pol_ct)
+
+x2_tidy <- tidy(pol_x2)
+```
+.
+
+There is a significant association (i.e. non-independence) between an individual's politics and whether they consider themselves to be an environmentalist ($\chi$^2^(`r x2_tidy$parameter`) = `r round(x2_tidy$statistic, 2)`, *p* = 2.23e-18.
+
+
+Overall, liberal-leaning individuals were `r 53.73-33.65`% more likely than conservative-leaning individuals to consider themselves an environmentalist, while conservatives were twice as likely as liberals to say they do not consider themselves an environmentalist. The proportion of those individuals who were unsure whether they considered themselves an environmentalist were fairly similar at 21.80% (liberal) and 16.11 (conservative).
+
+.
+
+### Citation
+
+**Data**: Andrews Forest LTER Site and C. Batavia. 2019. Influences on charitable giving for conservation: Online survey data of 1,331 respondents across the US, August 2017 ver 3. Environmental Data Initiative. https://doi.org/10.6073/pasta/926e6270e324a1322a900da14d38b96c
