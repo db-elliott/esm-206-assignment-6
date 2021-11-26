@@ -86,7 +86,7 @@ x2_tidy <- tidy(pol_x2)
 ```
 .
 
-There is a significant association (i.e. non-independence) between an individual's politics and whether they consider themselves to be an environmentalist ($\chi$^2^(`r x2_tidy$parameter`) = `r round(x2_tidy$statistic, 2)`, *p* = 2.23e-18.
+There is a significant association (i.e. non-independence) between an individual's politics and whether they consider themselves to be an environmentalist ($\chi$^2^(`r x2_tidy$parameter`) = `r round(x2_tidy$statistic, 2)`, *p* `r ifelse(x2_tidy$p.value < 0.001, paste("< 0.001"), paste("=", x2_tidy$p.value))`).
 
 
 Overall, liberal-leaning individuals were `r 53.73-33.65`% more likely than conservative-leaning individuals to consider themselves an environmentalist, while conservatives were twice as likely as liberals to say they do not consider themselves an environmentalist. The proportion of those individuals who were unsure whether they considered themselves an environmentalist were fairly similar at 21.80% (liberal) and 16.11 (conservative).

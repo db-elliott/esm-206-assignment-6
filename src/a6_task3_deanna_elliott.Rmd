@@ -13,14 +13,14 @@ library(tidyverse)
 library(here)
 library(janitor)
 library(kableExtra)
+library(effsize)
 ```
 
 ### Overview
 
+This report provides an exploratory overview of differences in female lizard length for two species--the Colorado Checkered lizard (*Cnemidophorus teassalatus*) and the Desert Grassland lizard (*Cnemidophorus uniparens*)--observed within the Jornada Basin Long Term Ecological Research (LTER) network site from 1989 - 2006 (Lightfoot 2017). Following exploratory data visualization, species lengths are analyzed by two-sample t-test using a significance level (α) of 0.05. Differences between groups are further described by Cohen’s d effect size. All analyses are in R version 4.1.1 using RStudio version 1.4.1717.
 
-
-
-### Data Analysis & Visualization
+### Data Visualization & Analysis
 
 ```{r}
 # read in data
@@ -65,6 +65,51 @@ liz_sub %>%
    kbl(col.names = c("Species", "Mean Length (mm)", "Standard Devation (mm)", "Sample Size"), caption = "<b> Table 1. Summary statistics for female lizard length.</b> Mean and standard deviation in mm, with sample sizes of the females of two lizard species observed at the Jornada Basin LTER. *Data: Lightfoot (2017)*.") %>% 
   kable_classic()
 ```
+
+```{r, exploration of assumptions, include = FALSE}
+
+# subset by species
+
+liz_u <- liz_sub %>% 
+  filter(spp == "CNUN") %>% 
+  drop_na(total_length) %>% 
+  pull(total_length)
+
+liz_t <- liz_sub %>% 
+  filter(spp == "CNTE") %>% 
+  drop_na(total_length) %>% 
+  pull(total_length)
+
+# explore normality of data with histograms and qq plots
+
+hist(liz_t) # normal-ish
+hist(liz_u) # normal-ish
+
+ggplot(data = liz_sub, aes(sample = total_length)) +
+  geom_qq() +
+  facet_wrap(~ spp)
+
+# t data looks normal enough, u data looks pretty normal
+# I can use a t-test
 ```
 
+```{r}
+
+# test for difference in means
+
+t_test <- t.test(liz_t, liz_u)
+
+# test for effect size
+
+cd <- cohen.d(liz_t, liz_u)
+```
+
+.
+
+The mean length of female *C. tessalatus* at Jornada Basin LTER is `r round(t_test$estimate[1] - t_test$estimate[2], 1)` g greater than the mean length of female *C. uniparens*; this is a 49.58% difference. If these samples were taken from populations with the same mean, there is a 4e^-10^% chance of finding sample means *at least* as different as these, which is very remote. Additionally, the means of both species' lengths do differ significantly (t-test | t(`r round(t_test$parameter, 0)`) = `r round(t_test$statistic, 2)`, *p* `r ifelse(t_test$p.value < 0.001, paste("< 0.001"), paste("=", t_test$p.value))`), and the effect size of the difference is large (Cohen's d |  d = `r round(cd$estimate, 2)`).
+
 ### Citation
+
+**Data**: Lightfoot, D. 2017. Lizard pitfall trap data (LTER-II, LTER-III) ver 36. Environmental Data Initiative. https://doi.org/10.6073/pasta/ff37b4cace16a9943575f3fd7067064e 
+
+.
