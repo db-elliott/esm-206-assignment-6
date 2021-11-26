@@ -1,0 +1,11 @@
+---
+title: "Mono Lake Levels"
+author: "Deanna Elliott"
+date: "11/26/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
