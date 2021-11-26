@@ -1,0 +1,58 @@
+---
+title: "Politics & Environmentalism"
+author: "Deanna Elliott"
+date: "11/25/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(here)
+library(janitor)
+library(broom)
+```
+
+## Overview
+
+
+## Read-In and Subset Data
+
+```{r}
+
+survey_data <- read_csv(here("data", "conservation_survey.csv")) %>% 
+  clean_names()
+
+pol_data <- survey_data %>%
+  mutate(politics = case_when(
+    pol_or %in% c(1, 2, 3) ~ "conservative",
+    pol_or %in% c(5, 6, 7) ~ "liberal")) %>% 
+  mutate(env_id = case_when(
+    env_id == 1 ~ "yes",
+    env_id == 2 ~ "no",
+    env_id == 3 ~ "unsure")) %>% 
+  subset(select = c(politics, env_id)) %>% 
+  na.omit()
+```
+
+## Create Table of Counts/Proportions
+
+```{r}
+
+counts <- pol_data %>% 
+  tabyl(politics, env_id)  # counts of intersections in a tibble
+
+props <- counts %>% 
+   adorn_percentages() %>%
+  adorn_pct_formatting(digits = 2) %>% 
+  adorn_ns()                           # counts & proportions in a tibble
+
+# convert to contingency table
+
+pol_ct <- props %>% 
+  column_to_rownames(var = "politics")
+
+```
+```
+
