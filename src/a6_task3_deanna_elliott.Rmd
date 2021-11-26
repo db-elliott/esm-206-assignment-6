@@ -1,0 +1,70 @@
+---
+title: "Lizard Lengths"
+author: "Deanna Elliott"
+date: "11/26/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+options(digits = 4)
+
+library(tidyverse)
+library(here)
+library(janitor)
+library(kableExtra)
+```
+
+### Overview
+
+
+
+
+### Data Analysis & Visualization
+
+```{r}
+# read in data
+
+liz <- read_csv(here("data", "lizards.csv"))
+
+# create subset by spp, sex, total_length
+
+liz_sub <- liz %>% 
+    subset(select = c(spp, sex, total_length)) %>% 
+  filter(spp %in% c("CNUN", "CNTE")) %>% 
+  filter(sex == "F") %>% 
+   mutate(spp_full = case_when(
+    spp == "CNUN" ~ "Cnemidophorus uniparens",
+    spp == "CNTE" ~ "Cnemidophorus tessalatus"))
+```
+
+```{r}
+
+# plot lengths by spp
+
+ggplot(data = liz_sub,
+       aes(x = spp_full, y = total_length, fill = spp_full)) +
+   scale_fill_manual(values = c("violetred", "royalblue1")) +
+  geom_dotplot(binaxis = "y", stackdir = "center", binwidth = 8) +
+  stat_summary(fun.y=mean, geom="point", shape=18,size=5, color="darkgoldenrod1") +
+  labs(x = "Species", y = "Total Length (mm)") +
+  theme_bw() +
+  theme(legend.position = "none")
+```
+
+**Figure 1. Female lizard lengths by species.** Length, sex, and species were recorded for lizards in the Jornada Basin LTER. This graph compares the sizes of female lizards of two species (*Cnemidophorus tessalatus* and *Cnemidophorus uniparens*). Overall, *C. tessalatus* length is larger, with middling overlap with *C. uniparens*. The yellow diamond in each species plot shows the mean length for that species. *Data: Lightfoot (2017)*.
+
+.
+
+```{r}
+# find summary stats for both species 
+
+liz_sub %>% 
+  group_by(spp_full) %>%
+  summarize(mean = mean(total_length, na.rm = TRUE), stdev = sd(total_length, na.rm = TRUE), sample = n()) %>% 
+   kbl(col.names = c("Species", "Mean Length (mm)", "Standard Devation (mm)", "Sample Size"), caption = "<b> Table 1. Summary statistics for female lizard length.</b> Mean and standard deviation in mm, with sample sizes of the females of two lizard species observed at the Jornada Basin LTER. *Data: Lightfoot (2017)*.") %>% 
+  kable_classic()
+```
+```
+
+### Citation
