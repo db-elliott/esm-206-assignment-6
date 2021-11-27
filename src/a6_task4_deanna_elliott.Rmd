@@ -32,20 +32,18 @@ ggplot(data  = lev,
   geom_jitter(fill = "royalblue1", color = "black", pch = 21, size = 2) +
   labs(x = "Year", y = "Lake Level (ft above sea level)") +
   theme_classic() +
-  annotate("text", x = 1938, y = 6401, label = "1941: Mono Lake\nis diverted to\nLos Angeles", size = 3) +
-  annotate("text", x = 1941, y = 6376, label = "1978: The Mono\nLake Committee\nis founded", size = 3) +
+  annotate("text", x = 1940, y = 6401, label = "1941: Mono Lake\nis diverted to\nLos Angeles", size = 3) +
+  annotate("text", x = 1954, y = 6380, label = "1978: The Mono\nLake Committee\nis founded", size = 3) +
    annotate("text", x = 1995, y = 6362, label = "1994: State Water\nBoard Decision 1631", size = 3) +
   annotate("text", x = 2010, y = 6405, label = "2013: Mono Basin\nStream Restoration\nAgreement", size = 3) +
-   annotate("text", x = 1890, y = 6400, label = "6377 ft: Land bridges\nlet predators cross\nto major nesting sites", size = 3) +
-    annotate("text", x = 1890, y = 6363, label = "6360 ft: Salinity of120 g/L;\nDecrease in available food\nsource for waterfowl", size = 3) +
-    annotate("segment", x = 1955, xend = 1972, y = 6375, yend = 6375, colour = "red", size=1, arrow=arrow()) +
-  annotate("segment", x = 1941, xend = 1941, y = 6405, yend = 6415, colour = "red", size=1, arrow=arrow()) +
-    annotate("segment", x = 1994, xend = 1994, y = 6365, yend = 6373, colour = "red", size=1, arrow=arrow()) +
-    annotate("segment", x = 2013, xend = 2013, y = 6400, yend = 6383, colour = "red", size=1, arrow=arrow()) +
-   annotate("segment", x = 1890, xend = 1850, y = 6377, yend = 6377, colour = "darkgreen", size=1, arrow=arrow()) +
-  annotate("segment", x = 1870, xend = 1850, y = 6360, yend = 6360, colour = "darkgreen", size=1, arrow=arrow()) +
-  annotate("segment", x = 1890, xend = 1890, y = 6377, yend = 6394, colour = "darkgreen", size = 1)
-
+   annotate("text", x = 1875, y = 6382, label = "6377 ft: Land bridges\nlet predators cross\nto major nesting sites", size = 3) +
+    annotate("text", x = 1875, y = 6365, label = "6360 ft: Salinity of120 g/L;\nDecrease in available food\nsource for waterfowl", size = 3) +
+    annotate("segment", x = 1942, xend = 1972, y = 6375, yend = 6375, colour = "red", size=0.75, arrow=arrow()) +
+  annotate("segment", x = 1941, xend = 1941, y = 6405, yend = 6415, colour = "red", size=0.75, arrow=arrow()) +
+    annotate("segment", x = 1994, xend = 1994, y = 6365, yend = 6373, colour = "red", size=0.75, arrow=arrow()) +
+    annotate("segment", x = 2013, xend = 2013, y = 6400, yend = 6385, colour = "red", size=0.75, arrow=arrow()) +
+   annotate("segment", x = 1891, xend = 1850, y = 6377, yend = 6377, colour = "darkgreen", size=0.75, arrow=arrow()) +
+  annotate("segment", x = 1891, xend = 1850, y = 6360, yend = 6360, colour = "darkgreen", size=0.75, arrow=arrow()) 
 
 ```
 
