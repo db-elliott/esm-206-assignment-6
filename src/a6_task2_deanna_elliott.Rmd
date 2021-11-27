@@ -60,7 +60,7 @@ props <- counts %>%
 ```{r}
 
 props[, c(1, 4, 2, 3)] %>% 
-  kbl(col.names = c("Politics", "Yes", "No", "Unsure"), caption = "<b> Table 1. Environmental opinion by political alignment. </b> Counts and proportions of conservatives versus liberals who answered either 'yes', 'no', or 'unsure' to the statement 'I consider myself an environmentalist.'") %>% 
+  kbl(col.names = c("", "Yes", "No", "Unsure"), caption = "<b> Table 1. Environmental opinion by political alignment. </b> Counts and proportions of conservatives versus liberals who answered either 'yes', 'no', or 'unsure' to the statement 'I consider myself an environmentalist.'") %>% 
   kable_classic()
 
 
