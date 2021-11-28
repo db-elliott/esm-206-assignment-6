@@ -11,12 +11,11 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 library(tidyverse)
 library(here)
 library(janitor)
-library(lubridate)
 ```
 
 ```{r}
 
-# read in data, skip first 4 rows
+# read in data, skip first 5 rows
 
 lev <- read_csv(here("data", "mono_lake_annual_levels.csv"), skip = 5) %>% 
   clean_names()
@@ -30,20 +29,23 @@ lev <- read_csv(here("data", "mono_lake_annual_levels.csv"), skip = 5) %>%
 ggplot(data  = lev,
        aes(x = year, y = lake_level_feet_above_sea_level)) +
   geom_jitter(fill = "royalblue1", color = "black", pch = 21, size = 2) +
+    scale_x_continuous(breaks = seq(from = 1850, to = 2015, by = 15)) +
   labs(x = "Year", y = "Lake Level (ft above sea level)") +
   theme_classic() +
   annotate("text", x = 1940, y = 6401, label = "1941: Mono Lake\nis diverted to\nLos Angeles", size = 3) +
-  annotate("text", x = 1954, y = 6380, label = "1978: The Mono\nLake Committee\nis founded", size = 3) +
+  annotate("text", x = 1978, y = 6405, label = "1978: The Mono\nLake Committee\nis founded", size = 3) +
    annotate("text", x = 1995, y = 6362, label = "1994: State Water\nBoard Decision 1631", size = 3) +
-  annotate("text", x = 2010, y = 6405, label = "2013: Mono Basin\nStream Restoration\nAgreement", size = 3) +
-   annotate("text", x = 1875, y = 6382, label = "6377 ft: Land bridges\nlet predators cross\nto major nesting sites", size = 3) +
-    annotate("text", x = 1875, y = 6365, label = "6360 ft: Salinity of120 g/L;\nDecrease in available food\nsource for waterfowl", size = 3) +
-    annotate("segment", x = 1942, xend = 1972, y = 6375, yend = 6375, colour = "red", size=0.75, arrow=arrow()) +
-  annotate("segment", x = 1941, xend = 1941, y = 6405, yend = 6415, colour = "red", size=0.75, arrow=arrow()) +
-    annotate("segment", x = 1994, xend = 1994, y = 6365, yend = 6373, colour = "red", size=0.75, arrow=arrow()) +
-    annotate("segment", x = 2013, xend = 2013, y = 6400, yend = 6385, colour = "red", size=0.75, arrow=arrow()) +
-   annotate("segment", x = 1891, xend = 1850, y = 6377, yend = 6377, colour = "darkgreen", size=0.75, arrow=arrow()) +
-  annotate("segment", x = 1891, xend = 1850, y = 6360, yend = 6360, colour = "darkgreen", size=0.75, arrow=arrow()) 
-
+  annotate("text", x = 2010, y = 6396, label = "2013: Mono Basin\nStream Restoration\nAgreement", size = 3) +
+   annotate("text", x = 1868, y = 6382, label = "6377 ft: Land bridges\nlet predators cross\nto major nesting sites", size = 3) +
+    annotate("text", x = 1870, y = 6365, label = "6360 ft: Salinity of120 g/L;\nDecrease in available food\nsource for waterfowl", size = 3) +
+  annotate("pointrange", x = 1941, y = 6417, ymin = 6405, ymax = 6417, colour = "red", size = 0.5) +
+  annotate("pointrange", x = 1978, y = 6375, ymin = 6375, ymax = 6400, colour = "red", size = 0.5) +
+  annotate("pointrange", x = 1994, y = 6375, ymin = 6365, ymax = 6375, colour = "red", size = 0.5) +
+  annotate("pointrange", x = 2013, y = 6381, ymin = 6381, ymax = 6391, colour = "red", size = 0.5) +
+  geom_pointrange(aes(x = 1850, xmin = 1850, xmax = 1885, y = 6377), colour = "darkgreen") +
+  geom_pointrange(aes(x = 1850, xmin = 1850, xmax = 1887, y = 6360), colour = "darkgreen")
 ```
+   
+  
+**Figure 1. Yearly water level of Mono Lake.** Water level (in feet above sea level) of Mono Lake, a terminal saline lake in Lee Vining, CA, measured annually from 1850 - 2017. Blue points show lake level, red points show important events in the recent history of Mono Lake, and green points show salinity levels at which the Moro Lake ecosystem is negatively impacted. 
 
