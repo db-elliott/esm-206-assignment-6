@@ -47,5 +47,5 @@ ggplot(data  = lev,
 ```
    
   
-**Figure 1. Yearly water level of Mono Lake.** Water level (in feet above sea level) of Mono Lake, a terminal saline lake in Lee Vining, CA, measured annually from 1850 - 2017. Blue points show lake level, red points show important events in the recent history of Mono Lake, and green points show salinity levels at which the Moro Lake ecosystem is negatively impacted. 
+**Figure 1. Yearly water level of Mono Lake.** Water level (in feet above sea level) of Mono Lake, a terminal saline lake in Lee Vining, CA, measured annually from 1850 - 2017. Blue points show lake level, red points show important events in the recent history of Mono Lake, and green points show water levels at which the Moro Lake ecosystem is negatively impacted. 
 
