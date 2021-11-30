@@ -62,7 +62,7 @@ ggplot(data = liz_sub,
 liz_sub %>% 
   group_by(spp_full) %>%
   summarize(mean = mean(total_length, na.rm = TRUE), stdev = sd(total_length, na.rm = TRUE), sample = n()) %>% 
-   kbl(col.names = c("Species", "Mean Length (mm)", "Standard Devation (mm)", "Sample Size"), caption = "<b> Table 1. Summary statistics for female lizard length.</b> Mean and standard deviation in mm, with sample sizes of the females of two lizard species observed at the Jornada Basin LTER. *Data: Lightfoot (2017)*.") %>% 
+   kbl(col.names = c("Species", "Mean Length (mm)", "Standard Devation (mm)", "Sample Size"), caption = "<b> Table 1. Summary statistics for female lizard length.</b> Mean and standard deviation in mm, with sample sizes of the females of two lizard species observed at the Jornada Basin LTER. <i> Data: Lightfoot (2017) </i>.") %>% 
   kable_classic()
 ```
 
